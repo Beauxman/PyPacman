@@ -32,7 +32,7 @@ class Nodes:
     def __init__(self, game, mapStringFile):
         self.game = game
         self.screen = game.screen
-        self.adjacencyList, self.nodeList, self.locations = list(), list(), list()
+        self.nodeList, self.locations = list(), list()
 
         self.xOffset, self.yOffset = 45, 50
         self.xScale, self.yScale = 26.5, 23.4
@@ -69,7 +69,6 @@ class Nodes:
             for j in range(0, len(self.nodeList[i]) - 1):
                 node = self.nodeList[i][j]
                 if node.type != 0:
-                    self.adjacencyList.append(node)
                     if "UP" in node.actions:
                         node.adjacent.append(self.nodeList[i - 1][j])
                     if "DOWN" in node.actions:
@@ -78,12 +77,11 @@ class Nodes:
                         node.adjacent.append(self.nodeList[i][j - 1])
                     if "RIGHT" in node.actions:
                         node.adjacent.append(self.nodeList[i][j + 1])
-                    print(len(self.nodeList[i][j].adjacent))
-
 
     def update(self):
         self.draw()
 
     def draw(self):
-        for node in self.adjacencyList:
-                node.update()
+        for i in range(0, len(self.nodeList)):
+            for node in self.nodeList[i]:
+                    node.update()

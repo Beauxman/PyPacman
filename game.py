@@ -50,7 +50,6 @@ class Game:
             self.nodes.update()
             pg.display.flip() 
 
-
 def main():
     g = Game()
     g.play()
