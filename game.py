@@ -1,6 +1,7 @@
 import pygame as pg
 from settings import Settings
 from maze import Maze
+from node import Nodes
 import game_functions as gf
 import sys
 
@@ -9,11 +10,12 @@ class Game:
     def __init__(self):
         pg.init()
         self.settings = Settings()
-        size = self.settings.screen_width, self.settings.screen_height   # tuple
+        size = self.settings.screen_width, self.settings.screen_height
         self.screen = pg.display.set_mode(size=size)
         pg.display.set_caption("Pacman")
 
         self.maze = Maze(game=self)
+        self.nodes = Nodes(game=self, mapStringFile="mapstring.txt")
 
         self.settings.initialize_speed_settings()
 
@@ -28,11 +30,13 @@ class Game:
 
     def play(self):
         running = True
-        while running:     # at the moment, only exits in gf.check_events if Ctrl/Cmd-Q pressed
+        self.nodes.createNodes()
+        while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
             self.maze.update()
+            self.nodes.update()
             pg.display.flip() 
 
 
