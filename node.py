@@ -16,7 +16,8 @@ class Node:
         self.draw()
 
     def draw(self):
-        pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
+        if self.type == 1:
+            pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
 
 class Nodes:
     def __init__(self, game, mapStringFile):
@@ -36,11 +37,23 @@ class Nodes:
         curY = self.yOffset
         for i in range(0, len(self.locations)):
             curX = self.xOffset
+            self.nodeList.append(list())
             for j in range(0, len(self.locations[i])):
+                type = 0
+                point = Point(x=curX, y=curY)
+                adjacent = list()
                 if self.locations[i][j] == "1":
-                    point = Point(x=curX, y=curY)
-                    node = Node(game=self.game, center=point, adjacent=None, type=1)
-                    self.nodeList.append(node)
+                    if self.locations[i - 1][j] == "1":
+                        adjacent.append("UP")
+                    if self.locations[i + 1][j] == "1":
+                        adjacent.append("DOWN")
+                    if self.locations[i][j - 1] == "1":
+                        adjacent.append("LEFT")
+                    if self.locations[i][j + 1] == "1":
+                        adjacent.append("RIGHT")
+                    type = 1
+                node = Node(game=self.game, center=point, adjacent=adjacent, type=type)
+                self.nodeList[i].append(node)
                 curX += self.xScale
             curY += self.yScale
 
@@ -48,5 +61,6 @@ class Nodes:
         self.draw()
 
     def draw(self):
-        for node in self.nodeList:
-            node.update()
+        for row in range(0, len(self.nodeList)):
+            for node in self.nodeList[row]:
+                node.update()

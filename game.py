@@ -15,7 +15,7 @@ class Game:
         pg.display.set_caption("Pacman")
 
         self.maze = Maze(game=self)
-        self.nodes = Nodes(game=self, mapStringFile="mapstring.txt")
+        self.nodes = Nodes(game=self, mapStringFile="maze.txt")
 
         self.settings.initialize_speed_settings()
 
@@ -31,11 +31,20 @@ class Game:
     def play(self):
         running = True
         self.nodes.createNodes()
+
+        ###### FOR TESTING #########
+        x, y = 1, 5
+        spot = self.nodes.nodeList[y][x]
+        for item in spot.adjacent:
+            print(item)
+
+        ###########################
         while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
             self.maze.update()
+            pg.draw.circle(self.screen, (255, 0, 0), (spot.center.x, spot.center.y), 20) # FOR TESTING
             self.nodes.update()
             pg.display.flip() 
 
