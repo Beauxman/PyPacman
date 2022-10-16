@@ -5,10 +5,11 @@ class Point:
         self.x, self.y = x, y
 
 class Node:
-    def __init__(self, game, center, adjacent, type):
+    def __init__(self, game, center, actions, type):
         self.screen = game.screen
         self.center = center
-        self.adjacent = adjacent
+        self.actions = actions
+        self.adjacent = list()
         self.type = type
 
         self.size = 1
@@ -16,6 +17,9 @@ class Node:
             self.size = 5
         elif type == 3:
             self.size = 10
+
+    def __repr__(self):
+        return "[NODE]: x = " + str(self.center.x) + ", y = " + str(self.center.y) + ", type = " + str(self.type)
 
     def update(self):
         self.draw()
@@ -28,7 +32,7 @@ class Nodes:
     def __init__(self, game, mapStringFile):
         self.game = game
         self.screen = game.screen
-        self.nodeList, self.locations = list(), list()
+        self.adjacencyList, self.nodeList, self.locations = list(), list(), list()
 
         self.xOffset, self.yOffset = 45, 50
         self.xScale, self.yScale = 26.5, 23.4
@@ -46,25 +50,40 @@ class Nodes:
             for j in range(0, len(self.locations[i]) - 1):
                 type = int(self.locations[i][j])
                 point = Point(x=curX, y=curY)
-                adjacent = list()
+                actions = list()
                 if self.locations[i][j] != "0":
                     if self.locations[i - 1][j] != "0":
-                        adjacent.append("UP")
+                        actions.append("UP")
                     if self.locations[i + 1][j] != "0":
-                        adjacent.append("DOWN")
+                        actions.append("DOWN")
                     if self.locations[i][j - 1] != "0":
-                        adjacent.append("LEFT")
+                        actions.append("LEFT")
                     if self.locations[i][j + 1] != "0":
-                        adjacent.append("RIGHT")
-                node = Node(game=self.game, center=point, adjacent=adjacent, type=type)
+                        actions.append("RIGHT")
+                node = Node(game=self.game, center=point, actions=actions, type=type)
                 self.nodeList[i].append(node)
                 curX += self.xScale
             curY += self.yScale
+
+        for i in range(0, len(self.nodeList) - 1):
+            for j in range(0, len(self.nodeList[i]) - 1):
+                node = self.nodeList[i][j]
+                if node.type != 0:
+                    self.adjacencyList.append(node)
+                    if "UP" in node.actions:
+                        node.adjacent.append(self.nodeList[i - 1][j])
+                    if "DOWN" in node.actions:
+                        node.adjacent.append(self.nodeList[i + 1][j])
+                    if "LEFT" in node.actions:
+                        node.adjacent.append(self.nodeList[i][j - 1])
+                    if "RIGHT" in node.actions:
+                        node.adjacent.append(self.nodeList[i][j + 1])
+                    print(len(self.nodeList[i][j].adjacent))
+
 
     def update(self):
         self.draw()
 
     def draw(self):
-        for row in range(0, len(self.nodeList)):
-            for node in self.nodeList[row]:
+        for node in self.adjacencyList:
                 node.update()

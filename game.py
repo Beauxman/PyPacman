@@ -35,7 +35,7 @@ class Game:
         ###### FOR TESTING #########
         x, y = 1, 5
         spot = self.nodes.nodeList[y][x]
-        for item in spot.adjacent:
+        for item in spot.actions:
             print(item)
 
         ###########################
@@ -45,6 +45,8 @@ class Game:
                     running = False
             self.maze.update()
             pg.draw.circle(self.screen, (255, 0, 0), (spot.center.x, spot.center.y), 20) # FOR TESTING
+            pg.draw.circle(self.screen, (0, 0, 255), (spot.adjacent[0].center.x, spot.adjacent[0].center.y), 20) # FOR TESTING
+            pg.draw.circle(self.screen, (0, 255, 0), (spot.adjacent[2].center.x, spot.adjacent[2].center.y), 20) # FOR TESTING
             self.nodes.update()
             pg.display.flip() 
 
