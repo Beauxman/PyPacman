@@ -17,3 +17,16 @@ class Player(Character):
             elif direction == "RIGHT":
                 self.changeImage("images/pacman3.png")
 
+    def checkCollisions(self):
+        toX, toY = self.nextNode.center.x, self.nextNode.center.y
+        rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
+        if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
+            if self.nextNode.type == 3:
+                pass
+                #CONSUME FRUIT FUNCTION HERE
+            self.nextNode.type = 0
+
+    def update(self):
+        self.checkCollisions()
+        self.nextDirection(self.directionNext, self.speed)
+        self.draw()

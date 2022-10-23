@@ -35,7 +35,6 @@ class Game:
         sys.exit()
 
     def play(self):
-
         running = True
         while running:
             for event in pg.event.get():

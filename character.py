@@ -21,9 +21,11 @@ class Character:
         self.direction = None
         self.directionNext = None
         self.atNode = True
+        self.nextNode = self.node
 
     def moveTowards(self, node, speed):
         self.atNode = False
+        self.nextNode = node
         toX, toY = node.center.x, node.center.y
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         sign = lambda x: math.copysign(1, x)
