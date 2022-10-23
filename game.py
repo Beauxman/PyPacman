@@ -2,6 +2,9 @@ import pygame as pg
 from settings import Settings
 from maze import Maze
 from node import Nodes
+from character import Character
+from player import Player
+from ghost import Ghost
 import game_functions as gf
 import sys
 
@@ -17,37 +20,42 @@ class Game:
         self.maze = Maze(game=self)
         self.nodes = Nodes(game=self, mapStringFile="maze.txt")
 
-        self.settings.initialize_speed_settings()
+        self.nodes.createNodes()
+        self.speed = self.settings.player_speed
 
+        self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
+        self.ghost1 = Ghost(game=self, image="images/ghost1.png", node=self.nodes.nodeList[14][14], speed=self.speed)
 
     def reset(self):
         print('Resetting game...')
 
     def game_over(self):
-        print('All ships gone: game over!')
+        print('Game over!')
         pg.quit()
         sys.exit()
 
     def play(self):
+
         running = True
-        self.nodes.createNodes()
-
-        ###### FOR TESTING #########
-        x, y = 1, 5
-        spot = self.nodes.nodeList[y][x]
-        for item in spot.actions:
-            print(item)
-
-        ###########################
         while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
+
+            keys = pg.key.get_pressed()
+            if keys[pg.K_UP]:
+                self.pacman.directionNext = "UP"
+            if keys[pg.K_DOWN]:
+                self.pacman.directionNext = "DOWN"
+            if keys[pg.K_LEFT]:
+                self.pacman.directionNext = "LEFT"
+            if keys[pg.K_RIGHT]:
+                self.pacman.directionNext = "RIGHT"
+
             self.maze.update()
-            pg.draw.circle(self.screen, (255, 0, 0), (spot.center.x, spot.center.y), 20) # FOR TESTING
-            pg.draw.circle(self.screen, (0, 0, 255), (spot.adjacent[0].center.x, spot.adjacent[0].center.y), 20) # FOR TESTING
-            pg.draw.circle(self.screen, (0, 255, 0), (spot.adjacent[2].center.x, spot.adjacent[2].center.y), 20) # FOR TESTING
             self.nodes.update()
+            self.pacman.update()
+            self.ghost1.update()
             pg.display.flip() 
 
 def main():

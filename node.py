@@ -12,7 +12,7 @@ class Node:
         self.adjacent = list()
         self.type = type
 
-        self.size = 1
+        self.size = 1 #NOTE# SET VALUE TO 0 WHEN DONE TESTING INVISIBLE NODES TO HIDE THEM
         if type == 1:
             self.size = 5
         elif type == 3:
@@ -49,7 +49,7 @@ class Nodes:
             self.nodeList.append(list())
             for j in range(0, len(self.locations[i]) - 1):
                 type = int(self.locations[i][j])
-                point = Point(x=curX, y=curY)
+                point = Point(x=round(curX), y=round(curY))
                 actions = list()
                 if self.locations[i][j] != "0":
                     if self.locations[i - 1][j] != "0":
