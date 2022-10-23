@@ -41,16 +41,6 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
 
-            keys = pg.key.get_pressed()
-            if keys[pg.K_UP]:
-                self.pacman.directionNext = "UP"
-            if keys[pg.K_DOWN]:
-                self.pacman.directionNext = "DOWN"
-            if keys[pg.K_LEFT]:
-                self.pacman.directionNext = "LEFT"
-            if keys[pg.K_RIGHT]:
-                self.pacman.directionNext = "RIGHT"
-
             self.maze.update()
             self.nodes.update()
             self.pacman.update()

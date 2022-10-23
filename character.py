@@ -42,7 +42,6 @@ class Character:
             self.atNode = True
 
     def checkAction(self, action):
-        actions = list()
         for item in self.node.actions:
             if item == action:
                 return True

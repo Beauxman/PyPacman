@@ -26,7 +26,19 @@ class Player(Character):
                 #CONSUME FRUIT FUNCTION HERE
             self.nextNode.type = 0
 
+    def checkInput(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_UP]:
+            self.directionNext = "UP"
+        if keys[pg.K_DOWN]:
+            self.directionNext = "DOWN"
+        if keys[pg.K_LEFT]:
+            self.directionNext = "LEFT"
+        if keys[pg.K_RIGHT]:
+            self.directionNext = "RIGHT"
+
     def update(self):
+        self.checkInput()
         self.checkCollisions()
         self.nextDirection(self.directionNext, self.speed)
         self.draw()
