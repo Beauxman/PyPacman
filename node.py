@@ -12,7 +12,7 @@ class Node:
         self.adjacent = list()
         self.type = type
 
-        self.size = 1 #NOTE# SET VALUE TO 0 WHEN DONE TESTING INVISIBLE NODES TO HIDE THEM
+        self.size = 1
         if type == 1:
             self.size = 5
         elif type == 3:
@@ -25,7 +25,7 @@ class Node:
         self.draw()
 
     def draw(self):
-        if self.type != 0:# and self.type != 2: #NOTE COMMENTED OUT FOR SHOWING OTHERWISE INVISIBLE NODES
+        if self.type != 0 and self.type != 2: #NOTE COMMENT OUT SECOND PART TO SHOW INVISBLE TRAVELABLE NODES
             pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
 
 class Nodes:
