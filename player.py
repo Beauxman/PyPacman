@@ -15,6 +15,8 @@ class Player(Character):
     def __init__(self, game, image, node, speed):
         super().__init__(game, image, node, speed)
 
+        self.game = game
+
         # initializing image timers
         self.timer_normal_right = Timer(frames=Player.pacman_right_images)
         self.timer_normal_left = Timer(frames=Player.pacman_left_images)

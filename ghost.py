@@ -39,6 +39,7 @@ class Ghost(Character):
 
         self.directionNext = "UP"
         self.type = type
+        self.scared = False
 
         # initializing image timers
         if self.type == 0:
