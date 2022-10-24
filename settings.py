@@ -8,7 +8,7 @@ class Settings():
         self.screen_height = 800
         self.bg_color = (0, 0, 0)
         
-        self.player_speed = 0.05
+        self.player_speed = 0.065
         self.initialize_speed_settings()
 
         self.lives_limit = 3

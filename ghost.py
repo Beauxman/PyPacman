@@ -69,8 +69,9 @@ class Ghost(Character):
             self.timer_scared = Timer(frames=Ghost.ghost_scared_images)
             self.timer_scared_end = Timer(frames=Ghost.ghost_scared_end_images)
 
-    def generateNextDirection(self): #VERY BASIC AI -- CHANGE LATER
-        if random.randint(0, 2000) == 0:
+    def generateNextDirection(self):
+        AIMultiplier = 1000 * (self.type + 1)
+        if random.randint(0, AIMultiplier) == 0:
             dirInt = random.randint(0, len(self.node.actions) - 1)
             self.directionNext = self.node.actions[dirInt]
     
