@@ -6,7 +6,7 @@ class Settings():
         # Screen settings
         self.screen_width = 800
         self.screen_height = 800
-        self.bg_color = (0, 0, 0)
+        self.bg_color = (0, 38, 78)
         
         self.player_speed = 0.065
         self.initialize_speed_settings()

@@ -23,48 +23,48 @@ class Menu:
         self.text_rect = self.text.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/10))
 
         font2 = pg.font.Font(None, 100)
-        self.text2 = font2.render("Play Game: Press Enter", True, self.text_color)
-        self.text_rect2 = self.text2.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/4.5))
+        self.text2 = font2.render("Press 'Enter' to Start", True, self.text_color)
+        self.text_rect2 = self.text2.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/3.5))
 
         font3 = pg.font.Font(None, 100)
         self.text3 = font3.render("Highscore: " + str(self.game.highscore), True, self.text_color)
-        self.text_rect3 = self.text_rect3 = self.text3.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/3.0))
+        self.text_rect3 = self.text_rect3 = self.text3.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/1.1))
 
         blinky_font = pg.font.Font(None, 80)
         self.blinky_text = blinky_font.render("Blinky", True, (255, 0, 0))
-        self.blinky_rect = self.blinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.4))
+        self.blinky_rect = self.blinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.3))
 
         inky_font = pg.font.Font(None, 80)
         self.inky_text = inky_font.render("Inky", True, (0, 191, 255))
-        self.inky_rect = self.inky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.1))
+        self.inky_rect = self.inky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.0))
 
         pinky_font = pg.font.Font(None, 80)
         self.pinky_text = pinky_font.render("Pinky", True, (255, 192, 203))
-        self.pinky_rect = self.pinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.7))
+        self.pinky_rect = self.pinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.75))
 
         clyde_font = pg.font.Font(None, 80)
         self.clyde_text = clyde_font.render("Clyde", True, (255, 165, 0))
-        self.clyde_rect = self.clyde_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.4))
+        self.clyde_rect = self.clyde_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.55))
 
         pacman_font = pg.font.Font(None, 80)
         self.pacman_text = pacman_font.render("Pac-man", True, (255, 215, 0))
-        self.pacman_rect = self.pacman_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.1))
+        self.pacman_rect = self.pacman_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/1.4))
 
 
         self.image = pg.image.load('images/blinky_down0.png')
-        self.rect = self.image.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.4))
+        self.rect = self.image.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.3))
         
         self.image2 = pg.image.load('images/inky_down0.png')
-        self.rect2 = self.image2.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.1))
+        self.rect2 = self.image2.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.0))
 
         self.image3 = pg.image.load('images/pinky_down0.png')
-        self.rect3 = self.image3.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.7))
+        self.rect3 = self.image3.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.75))
 
         self.image4 = pg.image.load('images/clyde_down0.png')
-        self.rect4 = self.image4.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.4))
+        self.rect4 = self.image4.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.55))
 
         self.image5 = pg.image.load('images/pacman0.png')
-        self.rect5 = self.image5.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.1))
+        self.rect5 = self.image5.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/1.4))
 
     def reset(self):
         self.update()
@@ -75,7 +75,6 @@ class Menu:
         self.draw()
     
     def draw(self):
-        self.screen.fill((50, 50, 50))
         self.screen.blit(self.text, self.text_rect)
         self.screen.blit(self.text2, self.text_rect2)
         self.screen.blit(self.text3, self.text_rect3)
