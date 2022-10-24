@@ -38,10 +38,14 @@ class Player(Character):
         toX, toY = self.nextNode.center.x, self.nextNode.center.y
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
-            if self.nextNode.type == 3:
-                pass
-                #CONSUME FRUIT FUNCTION HERE
-            self.nextNode.type = 0
+            if self.nextNode.type == 1: # pacman eats pellet
+                self.nextNode.type = 0
+                print("pellet! score: ", self.game.scoreboard.score)
+                self.game.scoreboard.increment_score(self.settings.pellet_points)
+            elif self.nextNode.type == 3: # pacman eats power pellet
+                self.nextNode.type = 0
+                self.game.scoreboard.increment_score(self.settings.power_pellet_points)
+                print("power pellet! score: ", self.game.scoreboard.score)
 
     def checkInput(self):
         keys = pg.key.get_pressed()

@@ -20,7 +20,6 @@ class Scoreboard:
     def increment_score(self, points):
         self.score += points
         self.prep_score()
-        print("points are now: ", points)
     
     def prep_score(self):
         score_str = str(self.score)
