@@ -17,12 +17,10 @@ class Scoreboard:
         self.score_rect = None
         self.prep_score()
 
-    def increment_score(self):
-        self.score += self.settings.ghost_points
-        self.score += self.settings.pellet_points
-        self.score += self.settings.power_pellet_points
-        self.score += self.settings.fruit_points
+    def increment_score(self, points):
+        self.score += points
         self.prep_score()
+        print("points are now: ", points)
     
     def prep_score(self):
         score_str = str(self.score)
