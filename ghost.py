@@ -37,6 +37,7 @@ class Ghost(Character):
     def __init__(self, game, image, node, speed, type):
         super().__init__(game, image, node, speed)
 
+        self.directionNext = "UP"
         self.type = type
 
         # initializing image timers
@@ -68,8 +69,6 @@ class Ghost(Character):
             self.timer_scared = Timer(frames=Ghost.ghost_scared_images)
             self.timer_scared_end = Timer(frames=Ghost.ghost_scared_end_images)
 
-        self.directionNext = "UP"
-
     def generateNextDirection(self): #VERY BASIC AI -- CHANGE LATER
         if random.randint(0, 2000) == 0:
             dirInt = random.randint(0, len(self.node.actions) - 1)
@@ -77,42 +76,14 @@ class Ghost(Character):
     
     def adjustImageToDirection(self, direction):
         if self.atNode and self.directionNext != None:
-            if self.type == 0:
-                if direction == "UP" or direction == None:
-                    self.blinkyy_timer = self.timer_bup
-                elif direction == "DOWN":
-                    self.blinky_timer = self.timer_bdown
-                elif direction == "LEFT":
-                    self.blinky_timer == self.timer_bleft
-                elif direction == "RIGHT":
-                    self.blinky_timer == self.timer_bright
-            elif self.type == 1:
-                if direction == "UP" or direction == None:
-                    self.pinky_timer = self.timer_bup
-                elif direction == "DOWN":
-                    self.pinky_timer = self.timer_bdown
-                elif direction == "LEFT":
-                    self.pinky_timer == self.timer_bleft
-                elif direction == "RIGHT":
-                    self.pinky_timer == self.timer_bright
-            elif self.type == 2:
-                if direction == "UP" or direction == None:
-                    self.inky_timer = self.timer_bup
-                elif direction == "DOWN":
-                    self.inky_timer = self.timer_bdown
-                elif direction == "LEFT":
-                    self.inky_timer == self.timer_bleft
-                elif direction == "RIGHT":
-                    self.inky_timer == self.timer_bright
-            elif self.type == 3:
-                if direction == "UP" or direction == None:
-                    self.clyde_timer = self.timer_bup
-                elif direction == "DOWN":
-                    self.clyde_timer = self.timer_bdown
-                elif direction == "LEFT":
-                    self.clyde_timer == self.timer_bleft
-                elif direction == "RIGHT":
-                    self.clyde_timer == self.timer_bright
+            if direction == "UP" or direction == None:
+                self.ghost_timer = self.timer_bup
+            elif direction == "DOWN":
+                self.ghost_timer = self.timer_bdown
+            elif direction == "LEFT":
+                self.ghost_timer = self.timer_bleft
+            elif direction == "RIGHT":
+                self.ghost_timer = self.timer_bright
             
     def update(self):
         self.generateNextDirection()
@@ -120,14 +91,8 @@ class Ghost(Character):
         self.draw()
 
     def draw(self):
-        if self.type == 0:
-            self.image = self.blinky_timer.imagerect()
-        elif self.type == 1:
-            self.image = self.pinky_timer.imagerect()
-        elif self.type == 2:
-            self.image = self.inky_timer.imagerect()
-        elif self.type == 3:
-            self.image = self.clyde_timer.imagerect()
+        if self.type:
+            self.image = self.ghost_timer.imagerect()
         self.rect = self.image.get_rect()
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y
         self.screen.blit(self.image, self.rect)
