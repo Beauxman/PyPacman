@@ -89,6 +89,10 @@ class Player(Character):
     def checkDead(self):
         if self.dead:
             self.speed = 0
+            self.game.blinky.speed = 0
+            self.game.pinky.speed = 0
+            self.game.inky.speed = 0
+            self.game.clyde.speed = 0
             self.timer = self.timer_death
             self.deathTimer += 1
             if self.deathTimer == self.deathLength:
