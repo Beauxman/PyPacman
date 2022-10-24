@@ -37,10 +37,17 @@ class Sound:
 
     def play_siren(self):
         pg.mixer.Sound.play(self.sounds['siren'])
+
+    def stop_bg(self):
+        pg.mixer.music.stop()
+    
+    def play_bg(self, loop):
+        pg.mixer.music.play(loops=loop)
         
     def gameover(self):
         self.stop_bg()
         pg.mixer.music.load('sounds/death.wav')
-        self.play_bg()
-        time.sleep(2.8)
+        self.play_bg(loop=1)
+        print("game over!")
+        # time.sleep(2.8)
     

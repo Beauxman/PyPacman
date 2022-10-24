@@ -16,6 +16,7 @@ class Player(Character):
         super().__init__(game, image, node, speed)
 
         self.game = game
+        self.sound = game.sound
         self.dead = False
         self.deathTimer = 0
         self.deathLength = 3000
@@ -44,9 +45,10 @@ class Player(Character):
         toX, toY = self.nextNode.center.x, self.nextNode.center.y
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
-            if self.nextNode.type != 0 and self.nextNode.type != 2:
-                self.game.scoreboard.increment_score(100)
+            if self.nextNode.type == 1:
+                self.game.scoreboard.increment_score(self.settings.pellet_points)
             if self.nextNode.type == 3:
+                self.game.scoreboard.increment_score(self.settings.power_pellet_points)
                 self.game.blinky.makeScared()
                 self.game.pinky.makeScared()
                 self.game.inky.makeScared()
@@ -54,26 +56,26 @@ class Player(Character):
             self.nextNode.type = 0
 
         #CHECK COLLISIONS WITH GHOST
-        if pg.Rect.colliderect(self.rect, self.game.blinky.rect):
+        if pg.Rect.colliderect(self.rect, self.game.blinky.rect) and not self.dead:
             if self.game.blinky.scared:
                 self.game.blinky.die()
             else:
-                self.dead = True
-        elif pg.Rect.colliderect(self.rect, self.game.pinky.rect):
+                self.die()
+        elif pg.Rect.colliderect(self.rect, self.game.pinky.rect) and not self.dead:
             if self.game.pinky.scared:
                 self.game.pinky.die()
             else:
-                self.dead = True
-        elif pg.Rect.colliderect(self.rect, self.game.inky.rect):
+                self.die()
+        elif pg.Rect.colliderect(self.rect, self.game.inky.rect) and not self.dead:
             if self.game.inky.scared:
                 self.game.inky.die()
             else:
-                self.dead = True
-        elif pg.Rect.colliderect(self.rect, self.game.clyde.rect):
+                self.die()
+        elif pg.Rect.colliderect(self.rect, self.game.clyde.rect) and not self.dead:
             if self.game.clyde.scared:
                 self.game.clyde.die()
             else:
-                self.dead = True
+                self.die()
 
     def checkTeleport(self):
         if self.atNode:
@@ -86,17 +88,23 @@ class Player(Character):
                 self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
                 self.directionNext = self.direction = "RIGHT"
 
+    def die(self):
+        self.dead = True
+        self.speed = 0
+        self.game.blinky.speed = 0
+        self.game.pinky.speed = 0
+        self.game.inky.speed = 0
+        self.game.clyde.speed = 0
+        self.game.sound.gameover()
+        self.timer = self.timer_death
+
     def checkDead(self):
-        if self.dead:
-            self.speed = 0
-            self.game.blinky.speed = 0
-            self.game.pinky.speed = 0
-            self.game.inky.speed = 0
-            self.game.clyde.speed = 0
-            self.timer = self.timer_death
-            self.deathTimer += 1
-            if self.deathTimer == self.deathLength:
-                self.game.reset()
+        # if self.dead:
+        #     self.deathTimer += 1
+        #     if self.deathTimer == self.deathLength:
+        #         self.game.reset()
+        if self.timer == self.timer_death and self.timer.finished:
+            self.game.reset()
 
     def checkInput(self):
         keys = pg.key.get_pressed()

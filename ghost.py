@@ -121,6 +121,7 @@ class Ghost(Character):
                 self.speed -= self.scaredSpeedMulti
             
     def die(self):
+        self.game.scoreboard.increment_score(self.settings.ghost_points)
         self.node = self.spawnNode
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
         self.startingSequence = True

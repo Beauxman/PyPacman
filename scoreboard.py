@@ -2,14 +2,14 @@ import pygame as pg
 
 class Scoreboard:
     def __init__(self, game):
-        self.score = -100
-        self.level = 0
-        self.high_score = 0
-
         self.game = game
         self.settings = game.settings
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
+
+        self.score = - self.settings.pellet_points
+        self.level = 0
+        self.high_score = 0
 
         self.text_color = (255, 255, 255)
         self.font = pg.font.SysFont(None, 48)
@@ -37,7 +37,7 @@ class Scoreboard:
         self.score_rect.top = 5
     
     def reset(self):
-        self.score = -100
+        self.score = - self.settings.pellet_points
         self.update()
     
     def update(self):
