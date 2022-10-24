@@ -41,8 +41,10 @@ class Player(Character):
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
             if self.nextNode.type == 3:
-                pass
-                #CONSUME FRUIT FUNCTION HERE
+                self.game.blinky.makeScared()
+                self.game.pinky.makeScared()
+                self.game.inky.makeScared()
+                self.game.clyde.makeScared()
             self.nextNode.type = 0
 
     def checkInput(self):

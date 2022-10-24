@@ -27,7 +27,7 @@ class Node:
         self.draw()
 
     def draw(self):
-        if self.type != 0 and self.type != 2: #NOTE COMMENT OUT SECOND PART TO SHOW INVISBLE TRAVELABLE NODES
+        if self.type != 0 and self.type != 2:
              pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
         #if self.type != 0 and self.type != 2:
         #    pellet = Pellet(self.game, self.center.x, self.center.y)
