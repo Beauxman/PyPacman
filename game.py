@@ -24,7 +24,10 @@ class Game:
         self.speed = self.settings.player_speed
 
         self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
-        self.ghost1 = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed)
+        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=0)
+        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
+        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
+        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
 
     def reset(self):
         print('Resetting game...')
@@ -44,7 +47,10 @@ class Game:
             self.maze.update()
             self.nodes.update()
             self.pacman.update()
-            self.ghost1.update()
+            self.blinky.update()
+            self.pinky.update()
+            self.inky.update()
+            self.clyde.update()
             pg.display.flip() 
 
 def main():
