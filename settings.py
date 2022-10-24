@@ -11,8 +11,16 @@ class Settings():
         self.player_speed = 0.05
         self.initialize_speed_settings()
 
-    def initialize_speed_settings(self):
-        pass
+        self.lives_limit = 3
 
-    def increase_speed(self):
-        pass
+        self.ghost_points = 200
+        self.pellet_points = 10
+        self.power_pellet_points = 50
+        self.fruit_points = 100
+        
+        self.initialize_speed_settings()
+
+    def initialize_speed_settings(self):
+        self.pacman_speed_factor = 2
+        self.ghost_speed_factor = 2
+
