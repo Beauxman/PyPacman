@@ -5,6 +5,7 @@ from node import Nodes
 from character import Character
 from player import Player
 from ghost import Ghost
+from scoreboard import Scoreboard
 import game_functions as gf
 import sys
 
@@ -28,6 +29,8 @@ class Game:
         self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
         self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
         self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
+
+        self.scoreboard = Scoreboard(game=self)
 
     def reset(self):
         print('Resetting game...')

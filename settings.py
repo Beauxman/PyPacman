@@ -17,6 +17,8 @@ class Settings():
         self.pellet_points = 10
         self.power_pellet_points = 50
         self.fruit_points = 100
+
+        self.pellet_size = 5
         
         self.initialize_speed_settings()
 
