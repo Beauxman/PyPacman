@@ -20,20 +20,10 @@ class Game:
         self.screen = pg.display.set_mode(size=size)
         pg.display.set_caption("Pacman")
 
-        self.maze = Maze(game=self)
-        self.nodes = Nodes(game=self, mapStringFile="maze.txt")
+        self.lives = 2
+        self.difficultyMulti = 0
 
         self.sound = Sound()
-
-        self.nodes.createNodes()
-        self.speed = self.settings.player_speed
-
-        self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
-        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=0)
-        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
-        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
-        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
-
         self.scoreboard = Scoreboard(game=self)
 
         self.highscore_file = "highscore.txt"
@@ -50,9 +40,27 @@ class Game:
         self.scene = 1
         self.sound.play_startup()
 
+    def initializeAssets(self):
+        self.maze = Maze(game=self)
+        self.nodes = Nodes(game=self, mapStringFile="maze.txt")
+
+        self.nodes.createNodes()
+        self.speed = self.settings.player_speed
+
+        self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
+        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=0)
+        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
+        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
+        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
+
     def reset(self):
         print('Resetting game...')
-    
+        if self.lives > 0:
+            self.lives -= 1
+            self.scoreboard.reset()
+            self.initializeAssets()
+        else:
+            self.game_over()
 
     def change_highscore(self):
         if self.scoreboard.score > self.highscore:
@@ -60,16 +68,31 @@ class Game:
             self.file.write(str(self.scoreboard.score))
             self.file.close()
             print("New highscore added: " + str(self.scoreboard.score))
-    
+
+    def checkWinCondition(self):
+        won = True
+        for i in range(0, len(self.nodes.nodeList)):
+            for node in self.nodes.nodeList[i]:
+                if node.type == 1 or node.type == 3:
+                    won = False
+        if won:
+            self.lives += 1
+            self.reset()
+            self.difficultyMulti += 0.1
+            self.blinky.speed += self.difficultyMulti
+            self.pinky.speed += self.difficultyMulti
+            self.inky.speed += self.difficultyMulti
+            self.clyde.speed += self.difficultyMulti
+
 
     def game_over(self):
         print('Game over!')
         self.change_highscore()
-        self.sound.gameover()
         pg.quit()
         sys.exit()
 
     def play(self):
+        self.initializeAssets()
         running = True
         while running:
             self.screen.fill(self.settings.bg_color)
@@ -88,6 +111,8 @@ class Game:
                 self.pinky.update()
                 self.inky.update()
                 self.clyde.update()
+                self.scoreboard.update()
+                self.checkWinCondition()
             pg.display.flip() 
 
 def main():

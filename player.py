@@ -16,6 +16,9 @@ class Player(Character):
         super().__init__(game, image, node, speed)
 
         self.game = game
+        self.dead = False
+        self.deathTimer = 0
+        self.deathLength = 3000
 
         # initializing image timers
         self.timer_normal_right = Timer(frames=Player.pacman_right_images)
@@ -37,15 +40,59 @@ class Player(Character):
                 self.timer = self.timer_normal_right
 
     def checkCollisions(self):
+        # CHECK COLLISIONS WITH FRUIT
         toX, toY = self.nextNode.center.x, self.nextNode.center.y
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
+            if self.nextNode.type != 0 and self.nextNode.type != 2:
+                self.game.scoreboard.increment_score(100)
             if self.nextNode.type == 3:
                 self.game.blinky.makeScared()
                 self.game.pinky.makeScared()
                 self.game.inky.makeScared()
                 self.game.clyde.makeScared()
             self.nextNode.type = 0
+
+        #CHECK COLLISIONS WITH GHOST
+        if pg.Rect.colliderect(self.rect, self.game.blinky.rect):
+            if self.game.blinky.scared:
+                self.game.blinky.die()
+            else:
+                self.dead = True
+        elif pg.Rect.colliderect(self.rect, self.game.pinky.rect):
+            if self.game.pinky.scared:
+                self.game.pinky.die()
+            else:
+                self.dead = True
+        elif pg.Rect.colliderect(self.rect, self.game.inky.rect):
+            if self.game.inky.scared:
+                self.game.inky.die()
+            else:
+                self.dead = True
+        elif pg.Rect.colliderect(self.rect, self.game.clyde.rect):
+            if self.game.clyde.scared:
+                self.game.clyde.die()
+            else:
+                self.dead = True
+
+    def checkTeleport(self):
+        if self.atNode:
+            if self.node == self.game.nodes.nodeList[14][0]:
+                self.node = self.game.nodes.nodeList[14][26]
+                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
+                self.directionNext = self.direction = "LEFT"
+            elif self.node == self.game.nodes.nodeList[14][27]:
+                self.node = self.game.nodes.nodeList[14][1]
+                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
+                self.directionNext = self.direction = "RIGHT"
+
+    def checkDead(self):
+        if self.dead:
+            self.speed = 0
+            self.timer = self.timer_death
+            self.deathTimer += 1
+            if self.deathTimer == self.deathLength:
+                self.game.reset()
 
     def checkInput(self):
         keys = pg.key.get_pressed()
@@ -59,6 +106,8 @@ class Player(Character):
             self.directionNext = "RIGHT"
 
     def update(self):
+        self.checkDead()
+        self.checkTeleport()
         self.checkInput()
         self.checkCollisions()
         self.nextDirection(self.directionNext, self.speed)

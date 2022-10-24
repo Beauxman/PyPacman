@@ -32,7 +32,7 @@ class Ghost(Character):
 
     # initializing other sprites
     ghost_scared_images = [pg.transform.scale(pg.image.load(f'images/ghost_scared{n}.png'), (32, 32)) for n in range(2)]
-    ghost_scared_end_images = [pg.transform.scale(pg.image.load(f'images/ghost_scared_end{n}.png'), (32, 32)) for n in range(20)]
+    ghost_scared_end_images = [pg.transform.scale(pg.image.load(f'images/ghost_scared_end{n}.png'), (32, 32)) for n in range(15, 20)]
 
     def __init__(self, game, image, node, speed, type):
         super().__init__(game, image, node, speed)
@@ -41,7 +41,10 @@ class Ghost(Character):
         self.type = type
         self.scared = False
         self.scaredTimer = 0
-        self.scaredCutoff = 10000
+        self.scaredCutoff = 8000
+        self.scaredSpeedMulti = 0.02
+        self.startingSequence = True
+        self.spawnNode = self.node
 
         # initializing image timers
         if self.type == 0:
@@ -69,18 +72,30 @@ class Ghost(Character):
             self.timer_bdown = Timer(frames=Ghost.clyde_down)
             self.inky_timer = self.timer_bright
 
-            self.timer_scared = Timer(frames=Ghost.ghost_scared_images)
-            self.timer_scared_end = Timer(frames=Ghost.ghost_scared_end_images)
-
     def generateNextDirection(self):
-        AIMultiplier = 1000 * (self.type + 1)
-        if random.randint(0, AIMultiplier) == 0:
+        if self.startingSequence:
+            if self.node.actions[0] != "UP":
+                self.directionNext = self.node.actions[random.randint(1, 2)]
+                self.startingSequence = False
+        else:
+            stationary = True
+            if self.atNode:
+                for action in self.node.actions:
+                    if action == self.directionNext:
+                        stationary = False
             dirInt = random.randint(0, len(self.node.actions) - 1)
-            self.directionNext = self.node.actions[dirInt]
+            self.directionNext = self.node
+            AIMultiplier = 200 * (self.type + 1)
+            if random.randint(0, AIMultiplier) == 0:
+                self.directionNext = self.node.actions[dirInt]
+            elif stationary:
+                self.directionNext = self.node.actions[dirInt]
 
     def makeScared(self):
         self.scared = True
-        self.speed += 0.01
+        self.speed += self.scaredSpeedMulti
+        dirInt = random.randint(0, len(self.node.actions) - 1)
+        self.directionNext = self.node.actions[dirInt]
     
     def adjustImageToDirection(self, direction):
         if self.atNode and self.directionNext != None:
@@ -95,13 +110,24 @@ class Ghost(Character):
 
     def checkScared(self):
         if self.scared:
-            self.ghost_timer = Timer(frames=Ghost.ghost_scared_images)
+            if self.scaredTimer >= self.scaredCutoff * 0.6:
+                self.ghost_timer = Timer(frames=Ghost.ghost_scared_end_images)
+            else:
+                self.ghost_timer = Timer(frames=Ghost.ghost_scared_images)
             self.scaredTimer += 1
             if self.scaredTimer >= self.scaredCutoff:
                 self.scaredTimer = 0
                 self.scared = False
-                self.speed -= 0.01
+                self.speed -= self.scaredSpeedMulti
             
+    def die(self):
+        self.node = self.spawnNode
+        self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
+        self.startingSequence = True
+        self.directionNext = self.direction = "UP"
+        self.scared = False
+        self.scaredTimer = 0
+
     def update(self):
         self.generateNextDirection()
         self.nextDirection(self.directionNext, self.speed)
