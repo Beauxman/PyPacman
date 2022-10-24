@@ -25,6 +25,6 @@ class Settings():
         self.initialize_speed_settings()
 
     def initialize_speed_settings(self):
-        self.pacman_speed_factor = 2
+        self.pacman_speed_factor = 1.3
         self.ghost_speed_factor = 2
 

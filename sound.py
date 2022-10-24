@@ -1,13 +1,12 @@
-import time
 import pygame as pg
 
 class Sound:
     def __init__(self):
         pg.mixer.init()
-        pg.mixer.music.set_volume(0.1)
-        gameover_sound = pg.mixer.Sound('sounds/death.wav')
+        pg.mixer.music.set_volume(1)
+        gameover_sound = pg.mixer.Sound('sounds/death2.wav')
         startup_sound = pg.mixer.Sound('sounds/pacman_beginning.wav')
-        eat_pellet_sound = pg.mixer.Sound('sounds/waka.wav')
+        eat_pellet_sound = pg.mixer.Sound('sounds/waka2.wav')
         eat_ghost_sound = pg.mixer.Sound('sounds/eat_ghost.wav')
         eat_fruit_sound = pg.mixer.Sound('sounds/eat_fruit.wav')
         power_pellet_sound = pg.mixer.Sound('sounds/power_pellet.wav')
@@ -30,7 +29,7 @@ class Sound:
         pg.mixer.Sound.play(self.sounds['eat_fruit'])
 
     def play_power_pellet(self):
-        pg.mixer.Sound.play(self.sounds['pacman_beginning.wav'])
+        pg.mixer.Sound.play(self.sounds['power_pellet'])
 
     def play_retreating(self):
         pg.mixer.Sound.play(self.sounds['retreating'])
@@ -46,8 +45,7 @@ class Sound:
         
     def gameover(self):
         self.stop_bg()
-        pg.mixer.music.load('sounds/death.wav')
+        pg.mixer.music.load('sounds/death2.wav')
         self.play_bg(loop=1)
         print("game over!")
-        # time.sleep(2.8)
     

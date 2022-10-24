@@ -1,4 +1,5 @@
 import pygame as pg
+import time
 from node import Point
 from character import Character
 from timer import Timer
@@ -20,13 +21,14 @@ class Player(Character):
         self.dead = False
         self.deathTimer = 0
         self.deathLength = 3000
+        self.speed = self.speed * self.settings.pacman_speed_factor # had to change his default speed to get the iconic wakawaka
 
         # initializing image timers
         self.timer_normal_right = Timer(frames=Player.pacman_right_images)
         self.timer_normal_left = Timer(frames=Player.pacman_left_images)
         self.timer_normal_up = Timer(frames=Player.pacman_up_images)
         self.timer_normal_down = Timer(frames=Player.pacman_down_images)
-        self.timer_death = Timer(frames=Player.pacman_death_images, looponce=True)
+        self.timer_death = Timer(frames=Player.pacman_death_images, wait=75, looponce=True)
         self.timer = self.timer_normal_right
 
     def adjustImageToDirection(self, direction):
@@ -47,8 +49,10 @@ class Player(Character):
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
             if self.nextNode.type == 1:
                 self.game.scoreboard.increment_score(self.settings.pellet_points)
+                self.sound.play_eat_pellet()
             if self.nextNode.type == 3:
                 self.game.scoreboard.increment_score(self.settings.power_pellet_points)
+                self.sound.play_eat_pellet()
                 self.game.blinky.makeScared()
                 self.game.pinky.makeScared()
                 self.game.inky.makeScared()
@@ -109,6 +113,7 @@ class Player(Character):
         #     if self.deathTimer == self.deathLength:
         #         self.game.reset()
         if self.timer == self.timer_death and self.timer.finished:
+            time.sleep(2)
             self.game.reset()
 
     def checkInput(self):
