@@ -41,7 +41,7 @@ class Player(Character):
                 self.timer = self.timer_normal_right
 
     def checkCollisions(self):
-        # CHECK COLLISIONS WITH FRUIT
+        # CHECK COLLISIONS WITH PELLETS
         toX, toY = self.nextNode.center.x, self.nextNode.center.y
         rDistanceX, rDistanceY = toX - self.rect.centerx, toY - self.rect.centery
         if rDistanceX <= self.nextNode.size / 2 or rDistanceY <= self.nextNode.size / 2:
@@ -55,7 +55,7 @@ class Player(Character):
                 self.game.clyde.makeScared()
             self.nextNode.type = 0
 
-        #CHECK COLLISIONS WITH GHOST
+        # CHECK COLLISIONS WITH GHOST
         if pg.Rect.colliderect(self.rect, self.game.blinky.rect) and not self.dead:
             if self.game.blinky.scared:
                 self.game.blinky.die()
@@ -76,6 +76,11 @@ class Player(Character):
                 self.game.clyde.die()
             else:
                 self.die()
+        
+        # CHECK COLLISIONS WITH FRUIT
+        if pg.Rect.colliderect(self.rect, self.game.fruit.rect) and not self.dead and self.game.fruit.active:
+            self.game.fruit.eaten()
+        
 
     def checkTeleport(self):
         if self.atNode:

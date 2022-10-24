@@ -16,7 +16,11 @@ class Settings():
         self.ghost_points = 200
         self.pellet_points = 10
         self.power_pellet_points = 50
-        self.fruit_points = 100
+        self.fruit_points = {0:100, 1:300, 2:500, 3:700, 4:1000, 5:2000, 6:3000, 7:5000}
+
+        self.fruit_spawntime_min = 2000
+        self.fruit_spawntime_max = 4000
+        self.fruit_availible_time = 2000
         
         self.initialize_speed_settings()
 

@@ -13,6 +13,8 @@ class Node:
         self.type = type
         self.game = game
 
+        self.pellet_color = (255, 255, 255)
+
         self.size = 1
         if type == 1:
             self.size = 5
@@ -27,7 +29,9 @@ class Node:
 
     def draw(self):
         if self.type != 0 and self.type != 2:
-             pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
+             pg.draw.circle(self.screen, self.pellet_color, (self.center.x, self.center.y), self.size)
+
+
 
 class Nodes:
     def __init__(self, game, mapStringFile):
