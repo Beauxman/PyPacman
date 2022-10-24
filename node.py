@@ -11,11 +11,13 @@ class Node:
         self.actions = actions
         self.adjacent = list()
         self.type = type
-        
+        self.game = game
+
         self.size = 1
-        self.pellet_size = 3
-        self.powerPellet_size = 10
-        self.color = (254, 211, 177)
+        if type == 1:
+            self.size = 5
+        elif type == 3:
+            self.size = 10
 
     def __repr__(self):
         return "[NODE]: x = " + str(self.center.x) + ", y = " + str(self.center.y) + ", type = " + str(self.type)
@@ -24,20 +26,8 @@ class Node:
         self.draw()
 
     def draw(self):
-<<<<<<< HEAD
         if self.type != 0 and self.type != 2:
              pg.draw.circle(self.screen, (255, 255, 255), (self.center.x, self.center.y), self.size)
-        #if self.type != 0 and self.type != 2:
-        #    pellet = Pellet(self.game, self.center.x, self.center.y)
-        #    pellet.draw()
-=======
-        if self.type != 0 and self.type != 2: #NOTE COMMENT OUT SECOND PART TO SHOW INVISBLE TRAVELABLE NODES
-            if self.type == 1:
-                pg.draw.circle(self.screen, self.color, (self.center.x, self.center.y), self.pellet_size)
-            if self.type == 3:
-                pg.draw.circle(self.screen, self.color, (self.center.x, self.center.y), self.powerPellet_size)
-
->>>>>>> a683f3fc66b642f292edc91fe5dff3a50eaffae4
 
 class Nodes:
     def __init__(self, game, mapStringFile):
