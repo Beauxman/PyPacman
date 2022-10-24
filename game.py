@@ -24,7 +24,7 @@ class Game:
         self.speed = self.settings.player_speed
 
         self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
-        self.ghost1 = Ghost(game=self, image="images/ghost1.png", node=self.nodes.nodeList[14][14], speed=self.speed)
+        self.ghost1 = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed)
 
     def reset(self):
         print('Resetting game...')
