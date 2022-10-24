@@ -92,13 +92,8 @@ class Ghost(Character):
                 self.ghost_timer = self.timer_bleft
             elif direction == "RIGHT":
                 self.ghost_timer = self.timer_bright
-            
-    def update(self):
-        self.generateNextDirection()
-        self.nextDirection(self.directionNext, self.speed)
-        self.draw()
 
-    def draw(self):
+    def checkScared(self):
         if self.scared:
             self.ghost_timer = Timer(frames=Ghost.ghost_scared_images)
             self.scaredTimer += 1
@@ -106,6 +101,14 @@ class Ghost(Character):
                 self.scaredTimer = 0
                 self.scared = False
                 self.speed -= 0.01
+            
+    def update(self):
+        self.generateNextDirection()
+        self.nextDirection(self.directionNext, self.speed)
+        self.checkScared()
+        self.draw()
+
+    def draw(self):
         self.image = self.ghost_timer.imagerect()
         self.rect = self.image.get_rect()
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y
