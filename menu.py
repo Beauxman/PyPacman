@@ -23,16 +23,16 @@ class Menu:
         self.text_rect = self.text.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/10))
 
         font2 = pg.font.Font(None, 100)
-        self.text2 = font2.render("Play Game", True, self.text_color)
+        self.text2 = font2.render("Play Game: Press Enter", True, self.text_color)
         self.text_rect2 = self.text2.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/4.5))
 
         font3 = pg.font.Font(None, 100)
-        self.text3 = font3.render("Highscores", True, self.text_color)
-        self.text_rect3 = self.text_rect3 = self.text3.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/3.5))
+        self.text3 = font3.render("Highscore: " + str(self.game.highscore), True, self.text_color)
+        self.text_rect3 = self.text_rect3 = self.text3.get_rect(center=(self.settings.screen_width/2, self.settings.screen_height/3.0))
 
         blinky_font = pg.font.Font(None, 80)
         self.blinky_text = blinky_font.render("Blinky", True, (255, 0, 0))
-        self.blinky_rect = self.blinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.9))
+        self.blinky_rect = self.blinky_text.get_rect(center=(self.settings.screen_width/2 + 100, self.settings.screen_height/2.4))
 
         inky_font = pg.font.Font(None, 80)
         self.inky_text = inky_font.render("Inky", True, (0, 191, 255))
@@ -52,7 +52,7 @@ class Menu:
 
 
         self.image = pg.image.load('images/blinky_down0.png')
-        self.rect = self.image.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.9))
+        self.rect = self.image.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.4))
         
         self.image2 = pg.image.load('images/inky_down0.png')
         self.rect2 = self.image2.get_rect(center=(self.settings.screen_width/2 - 140, self.settings.screen_height/2.1))
@@ -82,7 +82,7 @@ class Menu:
         self.screen.blit(self.blinky_text, self.blinky_rect)
         self.screen.blit(self.image, self.rect)
         self.screen.blit(self.inky_text, self.inky_rect)
-        self.screen.blit(self.image2, self.rect)
+        self.screen.blit(self.image2, self.rect2)
         self.screen.blit(self.pinky_text, self.pinky_rect)
         self.screen.blit(self.image3, self.rect3)
         self.screen.blit(self.clyde_text, self.clyde_rect)
