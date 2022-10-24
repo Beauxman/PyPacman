@@ -91,8 +91,7 @@ class Ghost(Character):
         self.draw()
 
     def draw(self):
-        if self.type:
-            self.image = self.ghost_timer.imagerect()
+        self.image = self.ghost_timer.imagerect()
         self.rect = self.image.get_rect()
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y
         self.screen.blit(self.image, self.rect)
