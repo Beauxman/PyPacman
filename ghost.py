@@ -80,12 +80,11 @@ class Ghost(Character):
 
     def makeScared(self):
         self.scared = True
+        self.speed += 0.01
     
     def adjustImageToDirection(self, direction):
         if self.atNode and self.directionNext != None:
-            if self.scared:
-                self.ghost_timer = Timer(frames=Ghost.ghost_scared_images)
-            elif direction == "UP" or direction == None:
+            if direction == "UP" or direction == None:
                 self.ghost_timer = self.timer_bup
             elif direction == "DOWN":
                 self.ghost_timer = self.timer_bdown
@@ -100,12 +99,14 @@ class Ghost(Character):
         self.draw()
 
     def draw(self):
-        self.image = self.ghost_timer.imagerect()
         if self.scared:
+            self.ghost_timer = Timer(frames=Ghost.ghost_scared_images)
             self.scaredTimer += 1
             if self.scaredTimer >= self.scaredCutoff:
                 self.scaredTimer = 0
                 self.scared = False
+                self.speed -= 0.01
+        self.image = self.ghost_timer.imagerect()
         self.rect = self.image.get_rect()
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y
         self.screen.blit(self.image, self.rect)
