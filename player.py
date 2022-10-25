@@ -106,6 +106,7 @@ class Player(Character):
                 self.directionNext = self.direction = "RIGHT"
 
     def die(self):
+        self.sound.stop_power_pellet()
         self.dead = True
         self.speed = 0
         self.game.blinky.speed = 0
