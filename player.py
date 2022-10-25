@@ -107,6 +107,7 @@ class Player(Character):
 
     def die(self):
         self.sound.stop_power_pellet()
+        self.sound.stop_siren()
         self.dead = True
         self.speed = 0
         self.game.blinky.speed = 0

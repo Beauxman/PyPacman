@@ -38,7 +38,10 @@ class Sound:
         pg.mixer.Sound.play(self.sounds['retreating'])
 
     def play_siren(self):
-        pg.mixer.Sound.play(self.sounds['siren'])
+        pg.mixer.Sound.play(self.sounds['siren'], loops=-1)
+
+    def stop_siren(self):
+        pg.mixer.Sound.stop(self.sounds['siren'])
 
     def stop_bg(self):
         pg.mixer.music.stop()

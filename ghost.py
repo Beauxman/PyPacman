@@ -83,6 +83,7 @@ class Ghost(Character):
         if self.startingSequence:
             if self.node.actions[0] != "UP":
                 self.directionNext = self.node.actions[random.randint(1, 2)]
+                self.game.sound.play_siren()
                 self.startingSequence = False
         else:
             stationary = True
@@ -104,6 +105,7 @@ class Ghost(Character):
         dirInt = random.randint(0, len(self.node.actions) - 1)
         self.directionNext = self.node.actions[dirInt]
         self.ghost_timer = self.timer_scared
+        self.game.sound.stop_siren()
         self.game.sound.play_power_pellet()
     
     def adjustImageToDirection(self, direction):
@@ -141,9 +143,11 @@ class Ghost(Character):
                 self.ghost_timer = self.timer_bright
                 self.scaredTime = 8000
                 self.game.sound.stop_power_pellet()
+                self.game.sound.play_siren()
             
     def die(self):
         self.game.scoreboard.increment_score(self.settings.ghost_points)
+        self.game.sound.play_retreating()
         self.prep_score()
         self.score_on = True
         self.node = self.spawnNode
