@@ -18,9 +18,12 @@ class Settings():
         self.power_pellet_points = 50
         self.fruit_points = {0:100, 1:300, 2:500, 3:700, 4:1000, 5:2000, 6:3000, 7:5000}
 
-        self.fruit_spawntime_min = 2000
-        self.fruit_spawntime_max = 4000
-        self.fruit_availible_time = 2000
+        self.fruit_amount = 2
+        self.fruit_spawntime_min = 4000
+        self.fruit_spawntime_max = 10000
+        self.fruit_availible_time = 5000
+
+        self.score_popup_time = 1000
         
         self.initialize_speed_settings()
 

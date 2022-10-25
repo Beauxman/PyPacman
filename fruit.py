@@ -31,7 +31,9 @@ class Fruit(Sprite):
         self.active = False
         self.fruit_spawn_timer = randint(self.settings.fruit_spawntime_min, self.settings.fruit_spawntime_max)
         self.fruit_availible_timer = self.settings.fruit_availible_time
-        self.fruits_remaining = 2
+        self.fruits_remaining = self.settings.fruit_amount
+        self.score_time = self.settings.score_popup_time
+        self.score_on = False
 
     def choose_fruit(self):
         self.fruit_type = randint(0, 7)
@@ -39,6 +41,7 @@ class Fruit(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx, self.rect.centery = self.node.center.x, self.node.center.y
         self.center = Point(self.rect.centerx, self.rect.centery)
+        self.points = self.settings.fruit_points[self.fruit_type]
 
     def check_fruit(self):
         if not self.active and self.fruit_spawn_timer >= 0:
@@ -53,6 +56,8 @@ class Fruit(Sprite):
 
     def eaten(self):
         self.scoreboard.increment_score(self.settings.fruit_points[self.fruit_type])
+        self.prep_score()
+        self.score_on = True
         self.sound.play_eat_fruit()
         self.despawn()
 
@@ -63,8 +68,30 @@ class Fruit(Sprite):
         self.fruit_availible_timer = self.settings.fruit_availible_time
         self.active = False
 
+    def prep_score(self):
+        self.font = pg.font.SysFont(None, 48)
+        self.text_color = (255, 255, 255)
+        self.score_str = str(self.points)
+        self.score_image = self.font.render(self.score_str, True, self.text_color)
+
+        self.score_rect = self.score_image.get_rect()
+        self.score_rect.right = self.rect.right
+        self.score_rect.top = self.rect.top
+    
+    def draw_score(self):
+        self.screen.blit(self.score_image, self.score_rect)
+
+    def score_popup(self):
+        if self.score_on and self.score_time >= 0:
+            self.score_time -= 1
+            self.draw_score
+        if self.score_on and self.score_time <= 0:
+            self.score_on = False
+            self.score_time = self.settings.score_popup_time
+
     def update(self):
         self.check_fruit()
+        self.score_popup()
         
     def draw(self):
         self.screen.blit(self.image, self.rect)

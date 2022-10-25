@@ -6,7 +6,6 @@ from timer import Timer
 
 class Ghost(Character):
     # initializing sprites for binky
-
     blinky_right = [pg.transform.scale(pg.image.load(f'images/blinky_right{n}.png'), (32, 32)) for n in range(2)]
     blinky_left = [pg.transform.flip(n, True, False) for n in blinky_right]
     blinky_up = [pg.transform.scale(pg.image.load(f'images/blinky_up{n}.png'), (32, 32)) for n in range(2)]
