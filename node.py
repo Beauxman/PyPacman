@@ -13,7 +13,7 @@ class Node:
         self.type = type
         self.game = game
 
-        self.pellet_color = (255, 255, 255)
+        self.pellet_color = (255, 210, 177)
 
         self.size = 1
         if type == 1:
