@@ -45,6 +45,9 @@ class Ghost(Character):
         self.startingSequence = True
         self.spawnNode = self.node
 
+        self.score_time = self.settings.score_popup_time
+        self.score_on = False
+
         # initializing image timers
         if self.type == 0:
             self.timer_bright = Timer(frames=Ghost.blinky_right)
@@ -121,6 +124,8 @@ class Ghost(Character):
             
     def die(self):
         self.game.scoreboard.increment_score(self.settings.ghost_points)
+        self.prep_score()
+        self.score_on = True
         self.node = self.spawnNode
         self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
         self.startingSequence = True
@@ -128,10 +133,32 @@ class Ghost(Character):
         self.scared = False
         self.scaredTimer = 0
 
+    def prep_score(self):
+        self.font = pg.font.SysFont(None, 24)
+        self.text_color = (0, 255, 255)
+        self.score_str = str(self.settings.ghost_points)
+        self.score_image = self.font.render(self.score_str, True, self.text_color)
+
+        self.score_rect = self.score_image.get_rect()
+        self.score_rect.centerx = self.rect.centerx
+        self.score_rect.centery = self.rect.centery
+    
+    def draw_score(self):
+        self.screen.blit(self.score_image, self.score_rect)
+
+    def score_popup(self):
+        if self.score_on and self.score_time >= 0:
+            self.score_time -= 1
+            self.draw_score()
+        elif self.score_on and self.score_time <= 0:
+            self.score_on = False
+            self.score_time = self.settings.score_popup_time
+
     def update(self):
         self.generateNextDirection()
         self.nextDirection(self.directionNext, self.speed)
         self.checkScared()
+        self.score_popup()
         self.draw()
 
     def draw(self):

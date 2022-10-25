@@ -80,7 +80,6 @@ class Fruit(Sprite):
     
     def draw_score(self):
         self.screen.blit(self.score_image, self.score_rect)
-        print("score has been drawn")
 
     def score_popup(self):
         if self.score_on and self.score_time >= 0:
