@@ -1,4 +1,5 @@
 import sys
+import time
 from threading import Timer
 import pygame as pg
 from pygame import mixer
@@ -15,6 +16,7 @@ class Menu:
         self.settings = game.settings
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
+        self.sound = game.sound
 
         self.text_color = (252, 186, 3)
 
@@ -70,9 +72,20 @@ class Menu:
         self.update()
     
     def update(self):
-        if gf.check_menu_events():
-            self.game.scene = 2
         self.draw()
+        if gf.check_menu_events() and self.game.scene == 1:
+            self.game.scene = 2
+            self.sound.play_startup()
+            self.game.maze.update()
+            self.game.nodes.update()
+            self.game.pacman.update()
+            self.game.blinky.update()
+            self.game.pinky.update()
+            self.game.inky.update()
+            self.game.clyde.update()
+            self.game.scoreboard.update()
+            pg.display.flip()
+            time.sleep(4)
     
     def draw(self):
         self.screen.blit(self.text, self.text_rect)

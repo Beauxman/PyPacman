@@ -63,21 +63,29 @@ class Player(Character):
         if pg.Rect.colliderect(self.rect, self.game.blinky.rect) and not self.dead:
             if self.game.blinky.scared:
                 self.game.blinky.die()
+                self.sound.play_eat_pellet()
+                self.sound.play_eat_ghost()
             else:
                 self.die()
         elif pg.Rect.colliderect(self.rect, self.game.pinky.rect) and not self.dead:
             if self.game.pinky.scared:
                 self.game.pinky.die()
+                self.sound.play_eat_pellet()
+                self.sound.play_eat_ghost()
             else:
                 self.die()
         elif pg.Rect.colliderect(self.rect, self.game.inky.rect) and not self.dead:
             if self.game.inky.scared:
                 self.game.inky.die()
+                self.sound.play_eat_pellet()
+                self.sound.play_eat_ghost()
             else:
                 self.die()
         elif pg.Rect.colliderect(self.rect, self.game.clyde.rect) and not self.dead:
             if self.game.clyde.scared:
                 self.game.clyde.die()
+                self.sound.play_eat_pellet()
+                self.sound.play_eat_ghost()
             else:
                 self.die()
         
@@ -113,7 +121,7 @@ class Player(Character):
         #     if self.deathTimer == self.deathLength:
         #         self.game.reset()
         if self.timer == self.timer_death and self.timer.finished:
-            time.sleep(2)
+            time.sleep(0.5)
             self.game.reset()
 
     def checkInput(self):

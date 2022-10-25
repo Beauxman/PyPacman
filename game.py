@@ -1,4 +1,5 @@
 import pygame as pg
+import time
 from settings import Settings
 from maze import Maze
 from node import Nodes
@@ -39,7 +40,6 @@ class Game:
 
         self.menu = Menu(game=self)
         self.scene = 1
-        self.sound.play_startup()
 
     def initializeAssets(self):
         self.maze = Maze(game=self)
@@ -49,10 +49,10 @@ class Game:
         self.speed = self.settings.player_speed
 
         self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
-        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=0)
-        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
-        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
-        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
+        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[11][14], speed=self.speed, type=0)
+        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=1)
+        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][12], speed=self.speed, type=2)
+        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][15], speed=self.speed, type=3)
         self.fruit = Fruit(game=self, node=self.nodes.nodeList[23][14])
 
     def reset(self):
@@ -61,6 +61,17 @@ class Game:
             self.lives -= 1
             self.scoreboard.reset()
             self.initializeAssets()
+            self.sound.play_startup()
+            self.maze.update()
+            self.nodes.update()
+            self.pacman.update()
+            self.blinky.update()
+            self.pinky.update()
+            self.inky.update()
+            self.clyde.update()
+            self.scoreboard.update()
+            pg.display.flip()
+            time.sleep(4)
         else:
             self.game_over()
 
