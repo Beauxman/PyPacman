@@ -62,30 +62,31 @@ class Fruit(Sprite):
         self.despawn()
 
     def despawn(self):
+        self.active = False
         self.fruits_remaining -= 1
         self.choose_fruit()
         self.fruit_spawn_timer = randint(self.settings.fruit_spawntime_min, self.settings.fruit_spawntime_max)
         self.fruit_availible_timer = self.settings.fruit_availible_time
-        self.active = False
 
     def prep_score(self):
-        self.font = pg.font.SysFont(None, 48)
+        self.font = pg.font.SysFont(None, 24)
         self.text_color = (255, 255, 255)
         self.score_str = str(self.points)
         self.score_image = self.font.render(self.score_str, True, self.text_color)
 
         self.score_rect = self.score_image.get_rect()
-        self.score_rect.right = self.rect.right
-        self.score_rect.top = self.rect.top
+        self.score_rect.centerx = self.rect.centerx
+        self.score_rect.centery = self.rect.centery
     
     def draw_score(self):
         self.screen.blit(self.score_image, self.score_rect)
+        print("score has been drawn")
 
     def score_popup(self):
         if self.score_on and self.score_time >= 0:
             self.score_time -= 1
-            self.draw_score
-        if self.score_on and self.score_time <= 0:
+            self.draw_score()
+        elif self.score_on and self.score_time <= 0:
             self.score_on = False
             self.score_time = self.settings.score_popup_time
 
