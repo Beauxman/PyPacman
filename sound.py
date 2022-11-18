@@ -29,13 +29,19 @@ class Sound:
         pg.mixer.Sound.play(self.sounds['eat_fruit'])
 
     def play_power_pellet(self):
-        pg.mixer.Sound.play(self.sounds['power_pellet'])
+        pg.mixer.Sound.play(self.sounds['power_pellet'], loops=-1)
+    
+    def stop_power_pellet(self):
+        pg.mixer.Sound.stop(self.sounds['power_pellet'])
 
     def play_retreating(self):
         pg.mixer.Sound.play(self.sounds['retreating'])
 
     def play_siren(self):
-        pg.mixer.Sound.play(self.sounds['siren'])
+        pg.mixer.Sound.play(self.sounds['siren'], loops=-1)
+
+    def stop_siren(self):
+        pg.mixer.Sound.stop(self.sounds['siren'])
 
     def stop_bg(self):
         pg.mixer.music.stop()
