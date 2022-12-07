@@ -40,7 +40,7 @@ class Ghost(Character):
         self.directionNext = "UP"
         self.type = type
         self.scared = False
-        self.speed *= 1.5
+        self.speed *= 1.6
         self.scaredTime = 8000
         # self.scaredCutoff = 8000
         self.scaredSpeedMulti = 0.02
@@ -171,7 +171,7 @@ class Ghost(Character):
         # PATHING #
         if self.atNode:
             self.randomizeDirection = False
-        if self.atNode and random.randint(0, 5 * (self.type + 1)) == 0:
+        if self.atNode and random.randint(0, 2 * (self.type + 6)) == 0:
             dirInt = random.randint(0, len(self.node.actions) - 1)
             self.directionNext = self.node.actions[dirInt]
             self.randomizeDirection = True
