@@ -41,6 +41,17 @@ class Character:
             self.node = node
             self.atNode = True
 
+    def checkTeleport(self):
+        if self.atNode:
+            if self.node == self.game.nodes.nodeList[14][0]:
+                self.node = self.game.nodes.nodeList[14][26]
+                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
+                self.directionNext = self.direction = "LEFT"
+            elif self.node == self.game.nodes.nodeList[14][27]:
+                self.node = self.game.nodes.nodeList[14][1]
+                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
+                self.directionNext = self.direction = "RIGHT"
+
     def checkAction(self, action):
         for item in self.node.actions:
             if item == action:

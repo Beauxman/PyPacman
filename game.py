@@ -49,17 +49,16 @@ class Game:
         self.speed = self.settings.player_speed
 
         self.pacman = Player(game=self, image="images/pacman0.png", node=self.nodes.nodeList[23][14], speed=self.speed)
-        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=0)
-        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[15][14], speed=self.speed, type=1)
-        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[15][13], speed=self.speed, type=2)
-        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=3)
+        self.blinky = Ghost(game=self, image="images/blinky_right0.png", node=self.nodes.nodeList[13][14], speed=self.speed, type=0)
+        self.pinky = Ghost(game=self, image="images/pinky_right0.png", node=self.nodes.nodeList[14][14], speed=self.speed, type=1)
+        self.inky = Ghost(game=self, image="images/inky_right0.png", node=self.nodes.nodeList[14][13], speed=self.speed, type=2)
+        self.clyde = Ghost(game=self, image="images/clyde_right0.png", node=self.nodes.nodeList[13][13], speed=self.speed, type=3)
         self.fruit = Fruit(game=self, node=self.nodes.nodeList[23][14])
 
     def reset(self):
-        print('Resetting game...')
+        print('Resetting Game...')
         if self.lives > 0:
             self.lives -= 1
-            self.scoreboard.reset()
             self.initializeAssets()
             self.sound.play_startup()
             self.maze.update()
@@ -88,6 +87,8 @@ class Game:
             for node in self.nodes.nodeList[i]:
                 if node.type == 1 or node.type == 3:
                     won = False
+                    i = len(self.nodes.nodeList) - 1
+                    break
         if won:
             self.lives += 1
             self.reset()
@@ -99,7 +100,7 @@ class Game:
 
 
     def game_over(self):
-        print('Game over!')
+        print('Game Over!')
         self.change_highscore()
         pg.quit()
         sys.exit()

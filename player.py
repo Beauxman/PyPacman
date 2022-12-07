@@ -92,18 +92,6 @@ class Player(Character):
         # CHECK COLLISIONS WITH FRUIT
         if pg.Rect.colliderect(self.rect, self.game.fruit.rect) and not self.dead and self.game.fruit.active:
             self.game.fruit.eaten()
-        
-
-    def checkTeleport(self):
-        if self.atNode:
-            if self.node == self.game.nodes.nodeList[14][0]:
-                self.node = self.game.nodes.nodeList[14][26]
-                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
-                self.directionNext = self.direction = "LEFT"
-            elif self.node == self.game.nodes.nodeList[14][27]:
-                self.node = self.game.nodes.nodeList[14][1]
-                self.rect.centerx, self.rect.centery = self.center.x, self.center.y = self.node.center.x, self.node.center.y
-                self.directionNext = self.direction = "RIGHT"
 
     def die(self):
         self.sound.stop_power_pellet()
@@ -136,6 +124,11 @@ class Player(Character):
             self.directionNext = "LEFT"
         if keys[pg.K_RIGHT]:
             self.directionNext = "RIGHT"
+        if keys[pg.K_F1]:
+            self.game.blinky.debugToggle = not self.game.blinky.debugToggle
+            self.game.inky.debugToggle = not self.game.inky.debugToggle
+            self.game.pinky.debugToggle = not self.game.pinky.debugToggle
+            self.game.clyde.debugToggle = not self.game.clyde.debugToggle
 
     def update(self):
         self.checkDead()

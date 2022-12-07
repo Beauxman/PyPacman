@@ -2,6 +2,7 @@ import pygame as pg
 from node import Point
 from character import Character
 import random
+import math
 from timer import Timer
 
 class Ghost(Character):
@@ -39,6 +40,7 @@ class Ghost(Character):
         self.directionNext = "UP"
         self.type = type
         self.scared = False
+        self.speed *= 1.5
         self.scaredTime = 8000
         # self.scaredCutoff = 8000
         self.scaredSpeedMulti = 0.02
@@ -47,6 +49,15 @@ class Ghost(Character):
 
         self.score_time = self.settings.score_popup_time
         self.score_on = False
+
+        self.previousPacmanNextNode = None
+        self.calculatePath = True
+        self.path, self.closed = list(), list()
+        self.calcTimerDef = 5000
+        self.calcTimer = 0
+        self.randomizeDirection = False
+
+        self.debugToggle = False
 
         # initializing image timers
         if self.type == 0:
@@ -80,24 +91,143 @@ class Ghost(Character):
         self.ghost_timer = self.timer_bup
 
     def generateNextDirection(self):
+        #if self.game.pacman.nextNode != self.previousPacmanNextNode or self.calcTimer <= 0:
+        if self.calcTimer <= 0:
+            self.calculatePath = True
+        self.calcTimer -= 1
+
         if self.startingSequence:
             if self.node.actions[0] != "UP":
                 self.directionNext = self.node.actions[random.randint(1, 2)]
                 self.game.sound.play_siren()
                 self.startingSequence = False
-        else:
-            stationary = True
-            if self.atNode:
-                for action in self.node.actions:
-                    if action == self.directionNext:
-                        stationary = False
+        elif self.calculatePath and self.atNode:
+            self.path = list()
+            self.calcTimer = self.calcTimerDef
+##################### BEGIN A STAR SEARCH #####################
+            goal = self.game.pacman.nextNode
+            self.previousPacmanNextNode = goal
+
+            open, closed = list(), list()
+
+            self.nextNode.g, self.nextNode.f = 0, 0
+            open.append(self.nextNode)
+            self.path.append(self.nextNode)
+
+            while len(open) > 0:
+                minf = 100000
+                q = open[0]
+                qn = 0
+
+                for n in range(0, len(open) - 1):
+                    if open[n].f < minf:
+                        minf = open[n].f
+                        q = open[n]
+                        qn = 0
+
+                self.path.append(q)
+
+                open.pop(qn)
+
+                for adj in q.adjacent:
+                    if adj == goal:
+                        open = list()
+                        self.closed = closed
+                        break
+                    else:
+                        adj.g = q.g + 1
+
+                        # Manhattan Distance #
+                        #adj.h = (abs(adj.center.x - goal.center.x) + abs(adj.center.y - goal.center.y))
+                        ######################
+
+                        # Euclidean Distance #
+                        #adj.h = math.sqrt((adj.center.x - goal.center.x) ** 2 +  (adj.center.y - goal.center.y) ** 2)
+                        ######################
+
+                        # Diagonal Distance # 
+                        dx, dy = abs(adj.center.x - goal.center.x), abs(adj.center.y - goal.center.y)
+                        adj.h = 1 * (dx + dy) + (math.sqrt(2) - 2 * 1) * min(dx, dy)
+                        ####################
+
+                        adj.f = adj.g + adj.h
+
+                    skip = False
+                    for n in open:
+                        if n == adj and n.f < adj.f:
+                            skip = True
+
+                    for n in closed:
+                        if n == adj and n.f <= adj.f:
+                            skip = True
+
+                    if not skip:
+                        open.append(adj)
+
+                closed.append(q)
+            self.calculatePath = False
+##################### END A STAR SEARCH #####################
+        # PATHING #
+        if self.atNode:
+            self.randomizeDirection = False
+        if self.atNode and random.randint(0, 20) == 0:
             dirInt = random.randint(0, len(self.node.actions) - 1)
-            self.directionNext = self.node
-            AIMultiplier = 200 * (self.type + 1)
-            if random.randint(0, AIMultiplier) == 0:
-                self.directionNext = self.node.actions[dirInt]
-            elif stationary:
-                self.directionNext = self.node.actions[dirInt]
+            self.directionNext = self.node.actions[dirInt]
+            self.randomizeDirection = True
+        elif not self.randomizeDirection:
+            isAdj = False
+            while not isAdj:
+                if len(self.path) > 0:
+                    for n in self.node.adjacent:
+                        if self.path[0] == n:
+                            isAdj = True
+
+                    if not isAdj:
+                        self.path.pop(0)
+                else:
+                    break
+
+            if len(self.path) > 0:
+                self.moveTowards(self.path[0], self.speed)
+                self.atNode = False
+                if not self.scared:
+                    if self.node.center.x > self.path[0].center.x:
+                        self.ghost_timer = self.timer_bleft
+                    elif self.node.center.x < self.path[0].center.x:
+                        self.ghost_timer = self.timer_bright
+                    elif self.node.center.y < self.path[0].center.y:
+                        self.ghost_timer = self.timer_bdown
+                    else:
+                        self.ghost_timer = self.timer_bup
+                if self.node.center.x == self.path[0].center.x and self.node.center.y == self.path[0].center.y:
+                    self.node = self.path[0]
+                    self.atNode = True
+                    self.path.pop(0)
+            elif self.atNode:
+                self.calcTimer = 0
+
+        # END PATHING #
+
+        # DEBUG A STAR #
+        if self.debugToggle:
+            if self.type == 0:
+                color1 = (180, 0, 0)
+                color2 = (255, 0, 0)
+            elif self.type == 1:
+                color1 = (255, 51, 153)
+                color2 = (255, 153, 204)
+            elif self.type == 2:
+                color1 = (0, 0, 180)
+                color2 = (0, 0, 255)
+            elif self.type == 3:
+                color1 = (255, 102, 0)
+                color2 = (255, 163, 102)
+
+            for i in range(len(self.closed) - 1):
+                pg.draw.circle(self.screen,  color1, (self.closed[i].center.x, self.closed[i].center.y), 6)
+            for i in range(len(self.path) - 1):
+                pg.draw.circle(self.screen, color2, (self.path[i].center.x, self.path[i].center.y), 3)
+        # END DEBUG A STAR #
 
     def makeScared(self):
         self.scared = True
@@ -181,8 +311,10 @@ class Ghost(Character):
             self.score_time = self.settings.score_popup_time
 
     def update(self):
+        self.checkTeleport()
         self.generateNextDirection()
-        self.nextDirection(self.directionNext, self.speed)
+        if self.startingSequence or self.randomizeDirection:
+            self.nextDirection(self.directionNext, self.speed)
         self.checkScared()
         self.score_popup()
         self.draw()
