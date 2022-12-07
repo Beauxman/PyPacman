@@ -137,18 +137,19 @@ class Ghost(Character):
                     else:
                         adj.g = q.g + 1
 
-                        # Manhattan Distance #
-                        #adj.h = (abs(adj.center.x - goal.center.x) + abs(adj.center.y - goal.center.y))
-                        ######################
-
-                        # Euclidean Distance #
-                        #adj.h = math.sqrt((adj.center.x - goal.center.x) ** 2 +  (adj.center.y - goal.center.y) ** 2)
-                        ######################
-
-                        # Diagonal Distance # 
-                        dx, dy = abs(adj.center.x - goal.center.x), abs(adj.center.y - goal.center.y)
-                        adj.h = 1 * (dx + dy) + (math.sqrt(2) - 2 * 1) * min(dx, dy)
-                        ####################
+                        if self.type == 3:
+                            # Manhattan Distance #
+                            adj.h = (abs(adj.center.x - goal.center.x) + abs(adj.center.y - goal.center.y))
+                            ######################
+                        elif self.type == 2:
+                            # Euclidean Distance #
+                            adj.h = math.sqrt((adj.center.x - goal.center.x) ** 2 +  (adj.center.y - goal.center.y) ** 2)
+                            ######################
+                        else:
+                            # Diagonal Distance # 
+                            dx, dy = abs(adj.center.x - goal.center.x), abs(adj.center.y - goal.center.y)
+                            adj.h = 1 * (dx + dy) + (math.sqrt(2) - 2 * 1) * min(dx, dy)
+                            ####################
 
                         adj.f = adj.g + adj.h
 
@@ -170,7 +171,7 @@ class Ghost(Character):
         # PATHING #
         if self.atNode:
             self.randomizeDirection = False
-        if self.atNode and random.randint(0, 20) == 0:
+        if self.atNode and random.randint(0, 5 * (self.type + 1)) == 0:
             dirInt = random.randint(0, len(self.node.actions) - 1)
             self.directionNext = self.node.actions[dirInt]
             self.randomizeDirection = True
