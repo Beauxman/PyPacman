@@ -7,7 +7,6 @@ from pygame.sprite import Sprite
 
 import game_functions as gf
 from button import Button
-from timer import Timer
 
 class Menu:
     def __init__(self, game):

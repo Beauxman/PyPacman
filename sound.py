@@ -53,5 +53,4 @@ class Sound:
         self.stop_bg()
         pg.mixer.music.load('sounds/death2.wav')
         self.play_bg(loop=1)
-        print("game over!")
     
