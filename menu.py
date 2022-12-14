@@ -6,7 +6,6 @@ from pygame import mixer
 from pygame.sprite import Sprite
 
 import game_functions as gf
-from button import Button
 
 class Menu:
     def __init__(self, game):
